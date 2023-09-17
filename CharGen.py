@@ -17,7 +17,7 @@ races = ["Human", "Dwarf", "Halfling"]
 subraces = ["Aquilonian", "Border Kingdom", "Skandaharian", "Stygian", "Wood Elf"]
 
 classes = ["Fighting-Man", "Magic-User", "Cleric", "Thief"]
-FMSubclasses = ["Ranger", "Paladin", "Death Knight"]
+FMSubclasses = ["Ranger", "Paladin", "Anti-Paladin"]
 MUSubclasses = ["Illusionist", "Necromancer"]
 CLRSubclasses = ["Anti-Cleric", "Druid", "Shaman", "Monk"]
 
@@ -97,24 +97,27 @@ def __getClass__( attributes ):
 
     highest_attribute = max(PRattributes, key=PRattributes.get)
 
-    #### unorderedscores = [strength, intelligence, wisdom, dexterity, constitution, charisma]
+    # Assigns character class based on the highest attribute.
 
-    # Find the attribute with the highest value
-    # highest_attribute = max(attributes, key=attributes.get)
+    # Some messy code has been added in to deal with tiebreakers because highest_attribute gets 
+    # confused in case of duplicate scores. 
 
-    # Assign character class based on the highest attribute
     # For now, these are all running on the stringent Strategic Revue/Greyhawk etc. 
-    # ability score requirements, rather than a more lenient dual-PR system.
+    # ability score requirements, rather than a more lenient dual-PR system. 
+    # Retainers are not allowed to swap ability scores (in this code.)
+    # Exceptions so far being the Ranger (int, wis and con requirements all dropped by 3.)
 
     # These many subclasses will have a function later that turns them 'off',
     # ie. back into their parent class, if the user did not selected against them.
     # Even if you play purist OD&D, the subclasses can still inform the character's concept.
 
     # Just for fun and symmetry we are adding OSE's Necromancer and an adapted Gazeteer Shaman (plus ACKS),
+    # the Paladin/Anti-Paladin, the Illusionist, Druid, Ranger...
 
     # Final note on the multiplicity of classes: we are here assuming that CONAN THE BARBARIAN
     # was a multi-classed F-M/Thief, rather than creating a Barbarian subclass, but a Barbarian could
     # easily be created (FM who can run up walls, etc.) who selects for high STR and CON.
+    # Later note: code added to support Barbarian selection.
 
     # Races will apply their own ability score requirements (as per BX) later on, given class.
 
@@ -124,6 +127,9 @@ def __getClass__( attributes ):
     tempALN = random.randint(1,6)
     # Where 1 to 3 is Lawful, 4 or 5 is Neutral and 6 is Chaotic.
 
+    tempChoose = random.randint(1,3)
+    # this is one more just for deciding on tiebreakers between classes.
+
     # In descending order of qualifying for the class:
 
     # FM Subclasses and Monk block
@@ -131,15 +137,30 @@ def __getClass__( attributes ):
         if tempALN <= 5:
             character_class = "Paladin"
         elif tempALN == 6:
-            character_class = "Death Knight"
-    elif highest_attribute == "STR" and intelligence >= 12 and wisdom >= 12 and constitution >= 15:
-        character_class = "Ranger" # will almost certainly change, that's ludicrous
+            character_class = "Anti-Paladin" # only a 1 in 6 chance of returning a Chaotic Paladin.
+    elif highest_attribute == "STR" and intelligence >= 9 and wisdom >= 9 and constitution >= 12:
+        # note the change in attribute requirements. Because more lenient, only 66% chance of returning Ranger.
+        if tempChoose <= 2:
+            character_class = "Ranger" 
+        else:
+            character_class = "Fighting-Man"
+    elif highest_attribute == "STR" and constitution >= 15:
+        character_class = "Barbarian"
     elif wisdom >= 15 and dexterity >= 15 and strength >= 12:
         character_class = "Monk"
 
     # Thief and Assassin block
     elif highest_attribute == "DEX" and strength >= 12 and intelligence >= 12 and dexterity >= 12:
         character_class = "Assassin"
+    elif (dexterity == wisdom and dexterity >= strength and dexterity > intelligence):
+        character_class = "Thief" 
+        # this was added because the max function iterates in order of insertion. The only tiebreaker
+        # I'm concerned with is that a high-dex and wis character be a Thief rather than a Cleric.
+    elif highest_attribute == "DEX" and intelligence >= 12:
+        if tempChoose == 1:
+            character_class = "Illusionist"
+        else:
+            character_class = "Thief"
     elif highest_attribute == "DEX":
         character_class = "Thief"
 
@@ -230,12 +251,14 @@ def __getRace__( charclass, attributes ):
                 dwarfchance = 0.55
                 #gnomechance = 0.15 
         
+        case "Ranger": # allowing Rangers to be (wood-)elves too
+             if intelligence >= 9 and dexterity >= 9:
+                elfchance = 0.55       
+
         # redundant blocks for subclasses, all Human only.
         case "Paladin":      
             result = "Human"
-        case "Death Knight":
-            result = "Human"
-        case "Ranger":      
+        case "Anti-Paladin":
             result = "Human"
         case "Monk":
             result = "Human"
@@ -256,7 +279,7 @@ def __getRace__( charclass, attributes ):
             if intelligence >= 9 and dexterity >= 9:
                 elfchance = 0.45
             elif constitution >= 9 and dexterity >= 9:
-                halflingchance = 0.65
+                halflingchance = 0.75
                 dwarfchance = 0.15
             elif constitution >= 9:     # this is an extreme edge case
                 dwarfchance = 0.45       # so chances are much higher
@@ -287,29 +310,6 @@ def __getRace__( charclass, attributes ):
     result = np.random.choice(outcomes, p=probabilities)
 
     return result
-
-# Test block
-
-testscores = __getAbilityScores__()
-
-##### MANUAL TEST 
-# Creating an empty dictionary
-## my_dict = {}
-## my_dict['STR'] = 11
-## my_dict['INT'] = 12
-## my_dict['WIS'] = 13
-## my_dict['DEX'] = 10
-## my_dict['CON'] = 9
-## my_dict['CHA'] = 16
-
-## testclass = __getClass__(my_dict)
-testclass = __getClass__(testscores)
-testrace = __getRace__(testclass,testscores)
-#  
-#  print(testscores)
-### print(my_dict)
-#  print(testclass)
-#  print(testrace)
 
 # The chances of nonhuman retainers is fairly rare, which fits well the 
 # assumptions of OD&D generally. Special envoys can always be made to elfland 
@@ -368,8 +368,7 @@ def __getSex__( race , charclass, attributes ):
 
     return sex
 
-testsex = __getSex__(testrace, testclass, testscores)
-# print(testsex)
+
 
 #%%
 
@@ -405,6 +404,32 @@ def __getRandomName__( race, gender ):
 
 
 
+###def __getHitPoints__( characterClass, attributes ):
+###
+###   hp_at_first = 0
+###
+###   conBonus = 0
+###
+###   con = attributes.get("CON")
+###   if con >= 15:
+###       conBonus = 1
+###   elif con <= 6:
+###       conBonus = -1
+###   else:
+###       conBonus = 0
+###
+###   rollone = random.randint(1,6)
+###   base_hp = rollone + conBonus
+###
+###   match characterClass:
+###       case "Fighting-Man":
+###           hp_at_first = base_hp + 1
+###       case "Fighting-Man":
+###           hp_at_first = base_hp + 1
+
+
+
+
 
 #%%
 
@@ -427,32 +452,42 @@ class myCharacter:
 
 newCharacter = myCharacter()
 
-print(json.dumps(newCharacter.__dict__))
+# print(json.dumps(newCharacter.__dict__))
 # need to print it in a different order than it's generated in 
 # ie name first, so on and so forth
 
+print(newCharacter.name)
+print(newCharacter.abilityScores)
+print(newCharacter.race, newCharacter.characterClass)
+print(newCharacter.hitPoints + " hit points")
+
 #%%
 
-# alternate method of saving a character as a dict.
-## char_one = dict({
-##     "Sex": sexes[random.randint(0,len(sexes)-1)],
-##     "Race": races[random.randint(0,len(races)-1)],
-##     "Name": [""],
-##     "AbilityScores": [_getAbilityScores_()]
-## })
-
-## char_one.Name = __getRandomName__(char_one.Race,char_one.Sex)
-
-## import pandas as pd
-## test = pd.DataFrame(char_one)
-## test.Name
-# actually printing a character
-
-#### print(vars(newCharacter))
 
 
+# Test block
 
+# testscores = __getAbilityScores__()
 
+##### MANUAL TEST 
+# Creating an empty dictionary
+## my_dict = {}
+## my_dict['STR'] = 11
+## my_dict['INT'] = 12
+## my_dict['WIS'] = 13
+## my_dict['DEX'] = 10
+## my_dict['CON'] = 9
+## my_dict['CHA'] = 16
 
+## testclass = __getClass__(my_dict)
+# testclass = __getClass__(testscores)
+#testrace = __getRace__(testclass,testscores)
+#  
+#  print(testscores)
+### print(my_dict)
+#  print(testclass)
+#  print(testrace)
 
-# %%
+# testsex = __getSex__(testrace, testclass, testscores)
+# print(testsex)
+
