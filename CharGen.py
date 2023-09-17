@@ -305,11 +305,11 @@ testscores = __getAbilityScores__()
 ## testclass = __getClass__(my_dict)
 testclass = __getClass__(testscores)
 testrace = __getRace__(testclass,testscores)
-
-print(testscores)
-## print(my_dict)
-print(testclass)
-print(testrace)
+#  
+#  print(testscores)
+### print(my_dict)
+#  print(testclass)
+#  print(testrace)
 
 # The chances of nonhuman retainers is fairly rare, which fits well the 
 # assumptions of OD&D generally. Special envoys can always be made to elfland 
@@ -369,7 +369,7 @@ def __getSex__( race , charclass, attributes ):
     return sex
 
 testsex = __getSex__(testrace, testclass, testscores)
-print(testsex)
+# print(testsex)
 
 #%%
 
@@ -412,11 +412,11 @@ def __getRandomName__( race, gender ):
 
 class myCharacter:
     def __init__(self) :
-        self.abilityScores = _getAbilityScores_()
+        self.abilityScores = __getAbilityScores__()
         self.characterClass = __getClass__(self.abilityScores)
         
-        self.race = __getRace__(self.characterClass)
-        self.sex = __getSex__(self.race)
+        self.race = __getRace__(self.characterClass, self.abilityScores)
+        self.sex = __getSex__(self.race, self.characterClass, self.abilityScores)
         self.name = ""
         
         self.prBonus = ""
