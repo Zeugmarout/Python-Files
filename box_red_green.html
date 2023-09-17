@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Change Box</title>
+    <style>
+        /* Define the initial style of the box */
+        .color-box {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="color-box" id="myBox", 
+    style = 'background-color: bisque; 
+    border: 1px dashed black;
+    border-radius:15%;
+    outline-style: solid;
+    outline-color: #7d7dbc;'>
+        <p style = "margin:10px;text-align:center;">I am a harmless box.</p>
+        <p id="myHiddenText", style="visibility: hidden; color:green">TAKE ME TO YOUR LEADER!!</p>
+    </div>
+
+    <script>
+        // JavaScript to change the color of the box
+        const box = document.getElementById('myBox');
+        const hidden_text = document.getElementById('myHiddenText');
+
+        box.addEventListener('mouseover', function() {
+            box.style.backgroundColor = 'red'
+            hidden_text.style.visibility = 'visible'
+        });
+        box.addEventListener('mouseleave', function(){
+            box.style.backgroundColor = 'bisque'
+            hidden_text.style.visibility = 'hidden'
+        });
+    </script>
+</body>
+</html>
