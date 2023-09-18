@@ -9,8 +9,6 @@ import random
 import numpy as np
 import json
 
-# dictionary
-
 # declarations of basic variables
 
 races = ["Human", "Dwarf", "Halfling"]
@@ -319,6 +317,132 @@ def __getRace__( charclass, attributes ):
 # E.g. elven druid will be wood elf 100%
 # Human F-M might be any of the subraces (Aquilonian etc.)
 
+def __getSubRace__(charclass, race):
+
+    # this is very dumb and finicky, and highly campaign-specific.  However:
+
+    # set up variables
+    subrace = ""
+    
+    # Define possible human outcomes
+    outcomes = ["Aquilonian", "Zamoran", "Skandaharian", "Saracen", "Stygian", "Cimmerian", "Hyrkanian", "Khitai", "Vendyan", "Border Kingdom"]
+
+    AquilChance = 0
+    ZamorChance = 0
+    SkandaChance = 0
+    SaraChance = 0
+    StygiChance = 0
+    CimmerChance = 0
+    HyrkanChance = 0
+    KhitChance = 0
+    VendyChance = 0
+
+
+    roll = random.randint(1,6)
+    result = ""
+
+    match race:
+        case "Human":
+            if charclass == "Fighting-Man":
+                AquilChance = 0.20
+                ZamorChance = 0.20
+                SkandaChance = 0.10
+            elif charclass == "Barbarian":
+                CimmerChance = 1.00
+            elif charclass == "Ranger":
+                AquilChance = 0.30
+                ZamorChance = 0.10
+                HyrkanChance = 0.10
+            elif charclass == "Paladin":
+                SaraChance = 0.15
+                AquilChance = 0.85
+            elif charclass == "Anti-Paladin":
+                HyrkanChance = 0.33
+                AquilChance = 0.33
+                ZamorChance = 0.34
+            elif charclass == "Magic-User":
+                AquilChance = 0.20
+                ZamorChance = 0.20
+                StygiChance = 0.20
+            elif charclass == "Illusionist":
+                AquilChance == 0.80
+            elif charclass == "Necromancer":
+                StygiChance = 0.50
+                ZamorChance = 0.50
+            elif charclass == "Thief":
+                AquilChance = 0.10
+                ZamorChance = 0.30
+                HyrkanChance = 0.30
+            elif charclass == "Assassin":
+                ZamorChance = 0.50
+                KhitChance = 0.50
+            elif charclass == "Cleric":
+                AquilChance = 0.60
+            elif charclass == "Anti-Cleric":
+                AquilChance = 0.60
+            elif charclass == "Shaman":
+                HyrkanChance = 1.00
+            elif charclass == "Monk":
+                VendyChance = 0.30
+                KhitChance = 0.60
+            else:
+                AquilChance = 0.05
+                ZamorChance = 0.05
+                SkandaChance = 0
+                SaraChance = 0
+                StygiChance = 0
+                CimmerChance = 0
+                HyrkanChance = 0
+                KhitChance = 0
+                VendyChance = 0
+
+
+            # Define the probabilities for each Human outcome
+            BorderKingdom = 1-(AquilChance + ZamorChance + SkandaChance + SaraChance + StygiChance + CimmerChance + HyrkanChance + KhitChance + VendyChance)
+            probabilities = [AquilChance, ZamorChance, SkandaChance, SaraChance, StygiChance, CimmerChance, HyrkanChance, KhitChance, VendyChance, BorderKingdom]
+            # Sample from the distribution
+            result = np.random.choice(outcomes, p=probabilities)
+
+            return result
+        
+        case "Dwarf":
+            result = "Dwarf"
+            return result
+        
+        case "Halfling":
+            result = "Halfling"
+            return result
+        
+        case "Gnome":
+            result = "Gnome"
+            return result
+        
+        case "Elf":
+            if charclass == "Ranger":
+                result = "Wood Elf"
+            elif charclass == "Druid":
+                result = "Wood Elf"
+            elif charclass == "Fighting-Man":
+                result = "High Elf"
+            elif charclass == "Magic-User":
+                result = "High Elf"
+            else:
+                if roll <= 3:
+                    result = "Wood Elf"
+                else:
+                    result = "High Elf"
+
+            return result
+                
+
+    
+            
+
+
+
+    
+    
+
 
 
 #%%
@@ -326,7 +450,72 @@ def __getRace__( charclass, attributes ):
     # getAlignment takes in the class and race to pick an alignment.
 
 def __getAlignment__( charclass, race ):
-    result = ""
+    result = "Neutral"
+    roll = random.randint(1,6)
+
+    # Demi-human block  (Elves and Gnomes assumed more likely to be Neutral)
+    if race == "Elf":
+        if roll >= 5:
+            result = "Lawful"
+    elif race == "Dwarf":
+        if roll >= 3:
+            result = "Lawful"
+    elif race == "Gnome":
+        if roll >= 5:
+            result = "Lawful"
+    elif race == "Halfling":
+        if roll >= 3:
+            result = "Lawful"
+    
+    # Lawful Class Block
+    elif charclass == "Paladin":
+            result = "Lawful"
+    elif charclass == "Ranger":
+            result = "Lawful"
+
+    # Leans heavily towards Law Block
+    elif charclass == "Cleric":
+        if roll <= 4:
+            result = "Lawful"
+        else:
+            result = "Neutral"
+
+    # Neutral Block
+    elif charclass == "Druid":
+            result = "Neutral"
+    elif charclass == "Assassin":
+            result = "Neutral"
+    elif charclass == "Thief":
+            if roll >= 5:
+                result = "Chaotic"
+
+    # Chaotic Block
+    elif charclass == "Anti-Paladin":
+        result = "Chaotic"
+    elif charclass == "Anti-Cleric":
+        if roll >= 3:
+            result = "Chaotic"
+
+    # Less-likely to be Lawful Block
+    elif charclass == "Magic-User":
+        if roll >= 5:
+            result = "Chaotic"
+    elif charclass == "Necromancer":
+        if roll >= 3:
+            result = "Chaotic"
+
+    # Catch-all Block that assumes campaign dist. of alignments 
+    # Where 1 to 2 is Lawful, 3 4 or 5 is Neutral and 6 is Chaotic...
+
+    else: 
+        if roll <= 2:
+            result = "Lawful"
+        elif roll <= 5:
+            result = "Neutral"
+        else:
+            result = "Chaotic"
+
+    
     return result 
 #%%
 
@@ -404,28 +593,65 @@ def __getRandomName__( race, gender ):
 
 
 
-###def __getHitPoints__( characterClass, attributes ):
-###
-###   hp_at_first = 0
-###
-###   conBonus = 0
-###
-###   con = attributes.get("CON")
-###   if con >= 15:
-###       conBonus = 1
-###   elif con <= 6:
-###       conBonus = -1
-###   else:
-###       conBonus = 0
-###
-###   rollone = random.randint(1,6)
-###   base_hp = rollone + conBonus
-###
-###   match characterClass:
-###       case "Fighting-Man":
-###           hp_at_first = base_hp + 1
-###       case "Fighting-Man":
-###           hp_at_first = base_hp + 1
+def __getHitPoints__( characterClass, attributes ):
+    # This returns as a string rather than an int just for the purpose of printing
+    # may cause problems later.
+
+    hp_at_first = 0
+    conBonus = 0
+
+    con = attributes.get("CON")
+    if con >= 15:
+        conBonus = 1
+    elif con <= 6:
+       conBonus = -1
+    else:
+       conBonus = 0
+
+    rollone = random.randint(1,6)
+    base_hp = rollone + conBonus
+
+    hp_at_first = base_hp
+
+    match characterClass:
+        case "Fighting-Man":
+            hp_at_first = base_hp + 1
+        case "Paladin": 
+            hp_at_first = base_hp + 1
+        case "Anti-Paladin":
+            hp_at_first = base_hp + 1
+        case "Ranger": 
+            hp_at_first = (base_hp*2)-2
+        case "Barbarian":
+            hp_at_first = (base_hp * 2)-2
+        case "Cleric":
+            hp_at_first = base_hp
+        case "Anti-Cleric":
+            hp_at_first = base_hp
+        case "Druid":
+            hp_at_first = base_hp
+        case "Shaman":
+            hp_at_first = base_hp
+        case "Magic-User":
+            hp_at_first = base_hp
+        case "Illusionist":
+            hp_at_first = base_hp
+        case "Necromancer":
+            hp_at_first = base_hp
+        case "Thief":
+            hp_at_first = base_hp
+        case "Assassin":
+            hp_at_first = base_hp
+        case "Monk":
+            hp_at_first = base_hp
+
+    if hp_at_first == 0:
+        hp_at_first = 1
+
+    hp_string = str(hp_at_first)
+
+    return hp_string
+    
 
 
 
@@ -441,12 +667,14 @@ class myCharacter:
         self.characterClass = __getClass__(self.abilityScores)
         
         self.race = __getRace__(self.characterClass, self.abilityScores)
+        self.subrace = __getSubRace__(self.characterClass, self.race)
         self.sex = __getSex__(self.race, self.characterClass, self.abilityScores)
+        self.align = __getAlignment__(self.characterClass, self.race)
         self.name = ""
         
         self.prBonus = ""
         self.hitDice = ""
-        self.hitPoints = ""
+        self.hitPoints = __getHitPoints__(self.characterClass, self.abilityScores)
         self.classFeatures = ""
         self.spellsperday = ""
 
@@ -458,8 +686,8 @@ newCharacter = myCharacter()
 
 print(newCharacter.name)
 print(newCharacter.abilityScores)
-print(newCharacter.race, newCharacter.characterClass)
-print(newCharacter.hitPoints + " hit points")
+print(newCharacter.align, newCharacter.subrace, newCharacter.characterClass, ", ", newCharacter.sex)
+print(newCharacter.hitPoints + " hp")
 
 #%%
 
@@ -467,7 +695,6 @@ print(newCharacter.hitPoints + " hit points")
 
 # Test block
 
-# testscores = __getAbilityScores__()
 
 ##### MANUAL TEST 
 # Creating an empty dictionary
@@ -478,16 +705,21 @@ print(newCharacter.hitPoints + " hit points")
 ## my_dict['DEX'] = 10
 ## my_dict['CON'] = 9
 ## my_dict['CHA'] = 16
-
-## testclass = __getClass__(my_dict)
-# testclass = __getClass__(testscores)
-#testrace = __getRace__(testclass,testscores)
-#  
-#  print(testscores)
 ### print(my_dict)
-#  print(testclass)
-#  print(testrace)
+# testclass = __getClass__(my_dict)
 
-# testsex = __getSex__(testrace, testclass, testscores)
-# print(testsex)
+###     
+###     testscores = __getAbilityScores__()
+###     testclass = __getClass__(testscores)
+###     testrace = __getRace__(testclass,testscores)
+###     testhp = __getHitPoints__(testclass, testscores)
+###     hp_string = str(testhp)
+###     testsex = __getSex__(testrace, testclass, testscores) 
+### 
+###     print(testscores)
+###     print(testsex, testrace, testclass)
+###     print(hp_string + " hp")
+###     
 
+
+#%%
