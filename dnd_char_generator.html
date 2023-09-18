@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <title>Default Title</title>
+    <style>
+        /* Define the column layout*/
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        /* Style for rows*/
+        .row {
+            width: 100%;
+            text-align:center;
+            background-color: #f0f0f0; /* Set the background color as needed */
+            padding: 10px; /* Add padding for spacing */
+        }
+
+         /* Style for each column */
+        .column {
+            flex-basis: 50%; /* Adjust the width as needed */
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .sidebar {
+            flex-basis:30%;
+            height: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .main-content {
+            flex-basis:70%;
+            padding: 10px;
+            height: 100%;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .box {
+            width: 100%;
+            border: 1px solid black;
+            border-radius:3%;
+            cursor: pointer;
+            margin-bottom: 2%;
+        }
+
+        .action-button {
+            width: 100%;
+            border: 1px solid black;
+            border-radius:3%;
+            cursor: pointer;
+            margin-bottom: 2%;
+        }
+
+        .image-box {
+            object-fit:contain;
+            background-repeat: no-repeat;
+        }
+
+        .centered_text {
+            text-align:center;
+        }
+
+        .title-container {
+            height:100px;
+        }
+
+    </style>
+</head>
+<!-- Start of content of HTML page-->
+<body>
+    <py-script src = "CharGen.py"></py-script>
+    <div class="container">
+        <div class="row title-container">
+            <h1>Dungeons and Dragons Character Generator</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class = 'sidebar' id = 'sidebar'>
+                <div>
+                    <!-- <button id="submit-button" type="button" py-click="my_function()">Roll Up Character</button> -->
+                    <button id="runScriptButton">Run Python Script</button>
+                    <div id="outputDiv"></div>
+                </div>
+        </div>
+        <div class="main-content" id = 'main-content'>
+                <div class = "box">
+                    <p id='output'></p>
+                    </div>
+                </div>
+        </div>
+    </div>
+<!-- End of content of HTML page-->
+<!-- Start of Python Script, if any-->
+    
+
+
+<!-- End of Python Script, if any-->
+
+<!-- Any Javascript code goes here */ -->
+    <script>
+    // Set height of containers based on dimensions of screen,
+    // once the page has loaded.
+    document.addEventListener("DOMContentLoaded", function() {
+
+        //var title_height = document.getElementsByClassName('title-container').style.height
+        all_boxes = document.getElementsByClassName('box')
+        //var s_height = screen.height - 50
+        var s_height = 600
+        var number_boxes = 4
+        var box_height = '250px'
+
+        document.getElementById('sidebar').style.height = s_height + 'px';
+        document.getElementById('main-content').style.height = s_height + 'px';
+        //document.getElementsByClassName('boxes').style.height = box_height + 'px';
+
+        console.log(box_height)
+
+        for (let i = 0; i < all_boxes.length; i++) {
+            all_boxes[i].style.height = box_height;
+            //all_boxes[i].style.borderRadius = Math.floor(all_boxes[i].style.width / 300) + '%';
+        }
+    });
+
+    const button = document.getElementById('runScriptButton');
+    const outputDiv = document.getElementById('outputDiv');
+
+    button.addEventListener('click', async () => {
+        try {
+                // Load the Python script from a file
+                const response = await fetch('CharGen.py');
+                const pythonScript = await response.text();
+
+                // Run the Python script using PyScript
+                const { output, error } = await PyScript.run(pythonScript);
+
+                if (error) {
+                    console.error('Error:', error);
+                } else {
+                    outputDiv.textContent = output;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
