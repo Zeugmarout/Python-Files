@@ -11,15 +11,19 @@ import json
 
 # declarations of basic variables
 
-races = ["Human", "Dwarf", "Halfling"]
+races = ["Human", "Dwarf", "Halfling", "Elf"]
 subraces = ["Aquilonian", "Border Kingdom", "Skandaharian", "Stygian", "Wood Elf"]
 
 classes = ["Fighting-Man", "Magic-User", "Cleric", "Thief"]
-FMSubclasses = ["Ranger", "Paladin", "Anti-Paladin"]
+FMSubclasses = ["Ranger", "Barbarian", "Paladin", "Anti-Paladin"]
 MUSubclasses = ["Illusionist", "Necromancer"]
 CLRSubclasses = ["Anti-Cleric", "Druid", "Shaman", "Monk"]
 
 sexes = ["Male", "Female"]
+
+
+
+
 
 PRBonus = ["-20%", "-10%", "+0%", "+5%", "+10%"]
 
@@ -125,7 +129,7 @@ def __getClass__( attributes ):
     tempALN = random.randint(1,6)
     # Where 1 to 3 is Lawful, 4 or 5 is Neutral and 6 is Chaotic.
 
-    tempChoose = random.randint(1,3)
+    tempChoose = random.randint(1,6)
     # this is one more just for deciding on tiebreakers between classes.
 
     # In descending order of qualifying for the class:
@@ -136,14 +140,19 @@ def __getClass__( attributes ):
             character_class = "Paladin"
         elif tempALN == 6:
             character_class = "Anti-Paladin" # only a 1 in 6 chance of returning a Chaotic Paladin.
+    
     elif highest_attribute == "STR" and intelligence >= 9 and wisdom >= 9 and constitution >= 12:
         # note the change in attribute requirements. Because more lenient, only 66% chance of returning Ranger.
-        if tempChoose <= 2:
+        if tempChoose >= 4:
             character_class = "Ranger" 
         else:
-            character_class = "Fighting-Man"
+            character_class = "Barbarian"
+    
+    # and now the backup chance yielding Barbarian in case int or wis are under 9.
     elif highest_attribute == "STR" and constitution >= 15:
         character_class = "Barbarian"
+    
+    # extremely unlikely, as written:
     elif wisdom >= 15 and dexterity >= 15 and strength >= 12:
         character_class = "Monk"
 
@@ -155,7 +164,7 @@ def __getClass__( attributes ):
         # this was added because the max function iterates in order of insertion. The only tiebreaker
         # I'm concerned with is that a high-dex and wis character be a Thief rather than a Cleric.
     elif highest_attribute == "DEX" and intelligence >= 12:
-        if tempChoose == 1:
+        if tempChoose <= 2:
             character_class = "Illusionist"
         else:
             character_class = "Thief"
@@ -485,6 +494,9 @@ def __getAlignment__( charclass, race ):
             result = "Neutral"
     elif charclass == "Assassin":
             result = "Neutral"
+    elif charclass == "Barbarian":
+            if roll >= 5:
+                result = "Chaotic"
     elif charclass == "Thief":
             if roll >= 5:
                 result = "Chaotic"
@@ -609,7 +621,15 @@ def __getHitPoints__( characterClass, attributes ):
        conBonus = 0
 
     rollone = random.randint(1,6)
+    rolltwo = random.randint(1,6)
+
     base_hp = rollone + conBonus
+    second_HD = rolltwo + conBonus
+
+    if base_hp == 0:
+        base_hp = 1
+    if second_HD == 0:
+        second_HD = 1
 
     hp_at_first = base_hp
 
@@ -621,9 +641,9 @@ def __getHitPoints__( characterClass, attributes ):
         case "Anti-Paladin":
             hp_at_first = base_hp + 1
         case "Ranger": 
-            hp_at_first = (base_hp*2)-2
+            hp_at_first = (base_hp + second_HD) - 2
         case "Barbarian":
-            hp_at_first = (base_hp * 2)-2
+            hp_at_first = (base_hp + second_HD) - 2
         case "Cleric":
             hp_at_first = base_hp
         case "Anti-Cleric":
@@ -645,7 +665,11 @@ def __getHitPoints__( characterClass, attributes ):
         case "Monk":
             hp_at_first = base_hp
 
-    if hp_at_first == 0:
+    if hp_at_first == 0 and characterClass == "Ranger":
+        hp_at_first = 2
+    if hp_at_first == 0 and characterClass == "Barbarian": # redundant?
+        hp_at_first = 2
+    elif hp_at_first == 0:
         hp_at_first = 1
 
     hp_string = str(hp_at_first)
@@ -686,7 +710,7 @@ newCharacter = myCharacter()
 
 print(newCharacter.name)
 print(newCharacter.abilityScores)
-print(newCharacter.align, newCharacter.subrace, newCharacter.characterClass, ", ", newCharacter.sex)
+print(newCharacter.align, " ", newCharacter.subrace, " ", newCharacter.characterClass, ", ", newCharacter.sex, sep="")
 print(newCharacter.hitPoints + " hp")
 
 #%%
@@ -697,29 +721,28 @@ print(newCharacter.hitPoints + " hp")
 
 
 ##### MANUAL TEST 
-# Creating an empty dictionary
-## my_dict = {}
-## my_dict['STR'] = 11
-## my_dict['INT'] = 12
-## my_dict['WIS'] = 13
-## my_dict['DEX'] = 10
-## my_dict['CON'] = 9
-## my_dict['CHA'] = 16
-### print(my_dict)
-# testclass = __getClass__(my_dict)
+##     # Creating an empty dictionary
+##     my_dict = {}
+##     my_dict['STR'] = 14
+##     my_dict['INT'] = 12
+##     my_dict['WIS'] = 13
+##     my_dict['DEX'] = 10
+##     my_dict['CON'] = 15
+##     my_dict['CHA'] = 16
+##     testscores = my_dict
+##     
+##     ## RANDOM METHOD
+##     # testscores = __getAbilityScores__()
+##     
+##     testclass = __getClass__(testscores)
+##     testrace = __getRace__(testclass,testscores)
+##     testhp = __getHitPoints__(testclass, testscores)
+##     hp_string = str(testhp)
+##     testsex = __getSex__(testrace, testclass, testscores) 
+##     print(testscores)
+##     print(testsex, testrace, testclass)
+##     print(hp_string + " hp")
 
-###     
-###     testscores = __getAbilityScores__()
-###     testclass = __getClass__(testscores)
-###     testrace = __getRace__(testclass,testscores)
-###     testhp = __getHitPoints__(testclass, testscores)
-###     hp_string = str(testhp)
-###     testsex = __getSex__(testrace, testclass, testscores) 
-### 
-###     print(testscores)
-###     print(testsex, testrace, testclass)
-###     print(hp_string + " hp")
-###     
 
 
 #%%
