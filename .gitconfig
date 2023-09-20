@@ -3,3 +3,6 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+pyscript.js
+pyscript.css
+run_python_from_html.html
