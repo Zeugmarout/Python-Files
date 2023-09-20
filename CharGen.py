@@ -8,14 +8,13 @@
 import random
 import numpy as np
 import json
+from dnd_char_constants import *
 
 # ask the user how many characters to generate
 num_chars_str = input("No. of characters to generate: ")
 num_chars = int(num_chars_str)
 
-
-
-
+"""
 races = ["Human", "Dwarf", "Halfling", "Elf"]
 subraces = ["Aquilonian", "Border Kingdom", "Skandaharian", "Stygian", "Wood Elf"]
 
@@ -110,7 +109,7 @@ gnome_male_names = ["Bombi", "Medden", "Flifur", "Eltas", "Jeleson", "Granwe", "
 gnome_female_names = ["Sella", "Flyfa", "Heccati", "Kafa", "Wynni"]
 gnome_last_names = [""]
 
-
+"""
 
 # Equipment.
 # I am here assuming that retainers need not roll for 30-180 GP and spend it on equipment, but rather
