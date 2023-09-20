@@ -119,7 +119,7 @@ def __getClass__( attributes ):
     # Final note on the multiplicity of classes: we are here assuming that CONAN THE BARBARIAN
     # was a multi-classed F-M/Thief, rather than creating a Barbarian subclass, but a Barbarian could
     # easily be created (FM who can run up walls, etc.) who selects for high STR and CON.
-    # Later note: code added to support Barbarian selection.
+    # Later note: code added to support Barbarian selection, though I doubt I'll use it.
 
     # Races will apply their own ability score requirements (as per BX) later on, given class.
 
@@ -141,9 +141,9 @@ def __getClass__( attributes ):
         elif tempALN == 6:
             character_class = "Anti-Paladin" # only a 1 in 6 chance of returning a Chaotic Paladin.
     
-    elif highest_attribute == "STR" and intelligence >= 9 and wisdom >= 9 and constitution >= 12:
+    elif highest_attribute == "STR" and intelligence >= 9 and wisdom >= 9 and constitution >= 15:
         # note the change in attribute requirements. Because more lenient, only 66% chance of returning Ranger.
-        if tempChoose >= 4:
+        if tempChoose >= 3:
             character_class = "Ranger" 
         else:
             character_class = "Barbarian"
@@ -153,7 +153,7 @@ def __getClass__( attributes ):
         character_class = "Barbarian"
     
     # extremely unlikely, as written:
-    elif wisdom >= 15 and dexterity >= 15 and strength >= 12:
+    elif highest_attribute == "WIS" and dexterity >= 11 and strength >= 11:
         character_class = "Monk"
 
     # Thief and Assassin block
@@ -334,16 +334,16 @@ def __getSubRace__(charclass, race):
     subrace = ""
     
     # Define possible human outcomes
-    outcomes = ["Aquilonian", "Zamoran", "Skandaharian", "Saracen", "Stygian", "Cimmerian", "Hyrkanian", "Khitai", "Vendyan", "Border Kingdom"]
+    outcomes = ["Aquilonian", "Zingaran", "Skandaharian", "Turanian", "Stygian", "Cimmerian", "Hyrkanian", "Khitai", "Vendyan", "Border Kingdom"]
 
     AquilChance = 0
-    ZamorChance = 0
+    ZingarChance = 0
     SkandaChance = 0
-    SaraChance = 0
+    TuraChance = 0
     StygiChance = 0
     CimmerChance = 0
     HyrkanChance = 0
-    KhitChance = 0
+    KhitChance = 0      # It's a little heavy on the Hyborian Age stuff... maybe cut them down to just a few?
     VendyChance = 0
 
 
@@ -354,51 +354,51 @@ def __getSubRace__(charclass, race):
         case "Human":
             if charclass == "Fighting-Man":
                 AquilChance = 0.20
-                ZamorChance = 0.20
+                ZingarChance = 0.20
                 SkandaChance = 0.10
             elif charclass == "Barbarian":
                 CimmerChance = 1.00
             elif charclass == "Ranger":
                 AquilChance = 0.30
-                ZamorChance = 0.10
+                ZingarChance = 0.10
                 HyrkanChance = 0.10
             elif charclass == "Paladin":
-                SaraChance = 0.15
+                TuraChance = 0.15
                 AquilChance = 0.85
             elif charclass == "Anti-Paladin":
                 HyrkanChance = 0.33
                 AquilChance = 0.33
-                ZamorChance = 0.34
+                ZingarChance = 0.34
             elif charclass == "Magic-User":
                 AquilChance = 0.20
-                ZamorChance = 0.20
+                ZingarChance = 0.20
                 StygiChance = 0.20
             elif charclass == "Illusionist":
                 AquilChance == 0.80
             elif charclass == "Necromancer":
                 StygiChance = 0.50
-                ZamorChance = 0.50
+                ZingarChance = 0.50
             elif charclass == "Thief":
                 AquilChance = 0.10
-                ZamorChance = 0.30
+                ZingarChance = 0.30
                 HyrkanChance = 0.30
             elif charclass == "Assassin":
-                ZamorChance = 0.50
-                KhitChance = 0.50
+                ZingarChance = 0.50
+                # KhitChance = 0.50
             elif charclass == "Cleric":
                 AquilChance = 0.60
             elif charclass == "Anti-Cleric":
                 AquilChance = 0.60
             elif charclass == "Shaman":
                 HyrkanChance = 1.00
-            elif charclass == "Monk":
-                VendyChance = 0.30
-                KhitChance = 0.60
+            # elif charclass == "Monk":
+                # VendyChance = 0.30
+                # KhitChance = 0.60
             else:
-                AquilChance = 0.05
-                ZamorChance = 0.05
-                SkandaChance = 0
-                SaraChance = 0
+                AquilChance = 0.15
+                ZingarChance = 0.15
+                SkandaChance = 0.05
+                TuraChance = 0
                 StygiChance = 0
                 CimmerChance = 0
                 HyrkanChance = 0
@@ -407,8 +407,8 @@ def __getSubRace__(charclass, race):
 
 
             # Define the probabilities for each Human outcome
-            BorderKingdom = 1-(AquilChance + ZamorChance + SkandaChance + SaraChance + StygiChance + CimmerChance + HyrkanChance + KhitChance + VendyChance)
-            probabilities = [AquilChance, ZamorChance, SkandaChance, SaraChance, StygiChance, CimmerChance, HyrkanChance, KhitChance, VendyChance, BorderKingdom]
+            BorderKingdom = 1-(AquilChance + ZingarChance + SkandaChance + TuraChance + StygiChance + CimmerChance + HyrkanChance + KhitChance + VendyChance)
+            probabilities = [AquilChance, ZingarChance, SkandaChance, TuraChance, StygiChance, CimmerChance, HyrkanChance, KhitChance, VendyChance, BorderKingdom]
             # Sample from the distribution
             result = np.random.choice(outcomes, p=probabilities)
 
@@ -676,9 +676,83 @@ def __getHitPoints__( characterClass, attributes ):
 
     return hp_string
     
+def __getStrMods__( strength ):
+    
+    statement = ""
 
+    if strength <= 6:
+        statement = "-1 to hit and damage in Single Combat melee. -1 to Force Doors. "
+    elif strength <= 8:
+        statement = "-1 to hit and damage in Single Combat melee. "
+    elif strength > 12 and strength < 15:
+        statement = "+1 to hit and damage in Single Combat melee. " 
+    elif strength >= 15:
+        statement = "+1 to hit and damage in Single Combat melee. +1 to Force Doors. "
 
+    return statement
 
+def __getWisMods__( wisdom ):
+    
+    statement = ""
+
+    if wisdom <= 6:
+        statement = "-2 to Saves vs magical effects. "
+    elif strength >= 15:
+        statement = "+2 to Saves vs magical effects. "
+
+    return statement
+
+def __getIntMods__( intelligence, charclass ):
+    
+    statement = ""
+    statement2 = ""
+
+    isArcane = False
+
+    match charclass:
+        case "Magic-User":
+            isArcane = True
+        case "Illusionist":
+            isArcane = True
+        case "Necromancer":
+            isArcane = True
+
+    over10 = intelligence - 10
+
+    if intelligence >= 11:
+        statement = f"Can speak {over10} additional languages. "
+
+    if isArcane and intelligence >= 14:
+        statement2 = statement + "One additional starting spell. "
+        statement = statement2
+
+    return statement
+
+def __getDexMods__( dexterity ):
+    
+    statement = ""
+
+    if dexterity <= 6:
+        statement = "-1 to hit with any missile in Single Combat. -1 to Initiative. "
+    elif dexterity <= 8:
+        statement = "-1 to hit with any missile in Single Combat. "
+    elif dexterity > 12 and dexterity < 15:
+        statement = "+1 to hit and damage in Single Combat. " 
+    elif dexterity >= 15:
+        statement = "+1 to hit with any missile in Single Combat. +1 to Initiative. "
+
+    return statement
+
+def __getConMods__( constitution ):
+    
+    statement = ""
+
+    if constitution <= 6:
+        statement = "-1 hp on each Hit Die (minimum: 1). "
+    elif constitution >= 15:
+        statement = "+1 hp on each Hit Die. "
+
+    return statement
 
 
 #%%
@@ -708,10 +782,34 @@ newCharacter = myCharacter()
 # need to print it in a different order than it's generated in 
 # ie name first, so on and so forth
 
+# redundant(?) block here so that I can write out the attributes print functions 
+# as readable code
+strength = newCharacter.abilityScores.get("STR")
+intelligence = newCharacter.abilityScores.get("INT")
+wisdom = newCharacter.abilityScores.get("WIS")
+dexterity = newCharacter.abilityScores.get("DEX")
+constitution = newCharacter.abilityScores.get("CON")
+charisma = newCharacter.abilityScores.get("CHA")
+
+str_text = __getStrMods__(strength)
+int_text = __getIntMods__(intelligence, newCharacter.characterClass)
+wis_text = __getWisMods__(wisdom)
+dex_text = __getDexMods__(dexterity)
+con_text = __getConMods__(constitution)
+
+abil_text = str_text + int_text + wis_text + dex_text + con_text
+
 print(newCharacter.name)
-print(newCharacter.abilityScores)
 print(newCharacter.align, " ", newCharacter.subrace, " ", newCharacter.characterClass, ", ", newCharacter.sex, sep="")
 print(newCharacter.hitPoints + " hp")
+print("Strength:", strength)
+print("Intelligence:", intelligence)
+print("Wisdom:", wisdom)
+print("Dexterity:", dexterity)
+print("Constitution:", constitution)
+print("Charisma:", charisma)
+print(abil_text)
+
 
 #%%
 
