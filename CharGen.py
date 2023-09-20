@@ -108,7 +108,7 @@ halfling_last_names = ["Potts", "Mugwort", "Brockhouse", "Sandshank", "Goodbody"
 # made up silly sounding dwarvish names
 gnome_male_names = ["Bombi", "Medden", "Flifur", "Eltas", "Jeleson", "Granwe", "Elmin", "Elkan", "Rimmi", "Urdur", "Pinka", "Nebi", "Tebi", "Yebi"]
 gnome_female_names = ["Sella", "Flyfa", "Heccati", "Kafa", "Wynni"]
-gnome_last_names = ["", "", ""]
+gnome_last_names = [""]
 
 
 
@@ -1049,7 +1049,7 @@ else:
 
     print("") # just as a spacer in the terminal
 
-    for number in range(1, num_chars):
+    for number in range(1, num_chars+1):
 
         newCharacter = myCharacter()
 
