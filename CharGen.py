@@ -14,7 +14,7 @@ num_chars_str = input("No. of characters to generate: ")
 num_chars = int(num_chars_str)
 
 
-# declarations of basic variables
+
 
 races = ["Human", "Dwarf", "Halfling", "Elf"]
 subraces = ["Aquilonian", "Border Kingdom", "Skandaharian", "Stygian", "Wood Elf"]
@@ -25,25 +25,24 @@ MUSubclasses = ["Illusionist", "Necromancer"]
 CLRSubclasses = ["Anti-Cleric", "Druid", "Shaman", "Monk"]
 
 sexes = ["Male", "Female"]
-
-
-
-
-
 PRBonus = ["-20%", "-10%", "+0%", "+5%", "+10%"]
 
-human_male_names = ["A", "B", "C"]
-human_female_names = ["A", "B", "C"]
-human_last_names = ["x", "y", "z"]
+
+# declarations of basic variables
+
+# redundant, just in case subraces is turned OFF.
+human_male_names = ["Guiscard", "Sciodin", "Hollin", "Gwalon", "Faelan", "Loic", "Barald", "Agbeorn", "Darnvith", "Balthus", "Tiberias", "Cossos", "Flavius", "Attius", "Ascalante", "Dionus", "Epimetreus", "Pelias", "Trinculo", "Nabonidas", "Horatio", "Chiron", "Lucius", "Claudio", "Mercutio", "Tybalt", "Strato", "Martius", "Mycaenas", "Alastor"]
+human_female_names = ["Maerbina", "Natala", "Vateesa", "Yasmela", "Khorala", "Myshalla", "Cymoril", "Hippolyta", "Octavia", "Wyldora", "Linaeya", "Valhame", "Isgar", "Domla", "Wenhild", "Iwohd", "Lychorida", "Dionyza", "Sylvia", "Cymbeline", "Calphurnia", "Cressida", "Innogen", "Coryda"]
+human_last_names = [""]
 
 # roman-sounding male names, howard's female names
 aquilonian_male_names = ["Tiberias", "Cossos", "Flavius", "Attius", "Ascalante", "Dionus", "Epimetreus", "Pelias", "Trinculo", "Nabonidas"]
 aquilonian_female_names = ["Maerbina", "Natala", "Vateesa", "Yasmela", "Khorala", "Myshalla", "Cymoril", "Hippolyta", "Octavia"]
 aquilonian_last_names = [""]
 
-borderking_male_names = ["Guiscard", "Hollin", "Gwalon", "Faelan", "Loic", "Barald", "Agbeorn", "Darnvith", "Balthus"]
+borderking_male_names = ["Guiscard", "Sciodin", "Hollin", "Gwalon", "Faelan", "Loic", "Barald", "Agbeorn", "Darnvith", "Balthus"]
 borderking_female_names = ["Wyldora", "Linaeya", "Valhame", "Isgar", "Domla", "Wenhild", "Iwohd"]
-borderking_last_names = ["", "", ""]
+borderking_last_names = [""]
 
 skanda_male_names = ["Yorn", "Throf", "Vigtham", "Hyrrad", "Soleigr", "Sigferth", "Bjorgulf", "Thorred", "Harrek", "Halvdan"]
 skanda_female_names = ["Hildrid", "Aestrid", "Thorlja", "Thorve", "Ashild", "Halla", "Holmfrid"]
@@ -53,17 +52,46 @@ skanda_last_names = [""]
 # for a tone of elegance and aristocracy fallen into decay.
 zingaran_male_names = ["Horatio", "Chiron", "Lucius", "Claudio", "Mercutio", "Tybalt", "Strato", "Martius", "Mycaenas", "Alastor"]
 zingaran_female_names = ["Lychorida", "Dionyza", "Sylvia", "Cymbeline", "Calphurnia", "Cressida", "Innogen", "Coryda"] 
-zingaran_last_names = [""]
+zingaran_last_names = ["Pedrerro", "Zamorano", "Coronel", "Morterero", "Zaragoza", "Ascaso", "Orellana", "Valderas", "del Mallen", "del Ocana", "del Villareal"]
 
-# remaining human names 
-# "Turanian", "Stygian", "Cimmerian", "Hyrkanian", "Khitai", "Vendyan",
+turanian_male_names = ["Bircan", "Nuri", "Akman", "Kai", "Yasam", "Armagan", "Aydolun", "Tozun", "Ertas", "Arif"]
+turanian_female_names = ["Ediz", "Hazret", "Aysu", "Icten", "Latife", "Elsin", "Eylul", "Nehir"] 
+turanian_last_names = [""]
 
+# Ancient Egyptian (obviously) with female first names as last names too. Matrilinial.
+stygian_male_names = ["Shak-amen", "Aker", "Asychis", "Ka-met-ef", "Psamtic", "Mesocris", "Met-su-aut", "Sebekem", "Quas-shi", "Amun-ra"]
+stygian_female_names = ["Khata", "Umaya", "Zesiro", "Renenet", "Rashida", "Menai-rata", "Nefertiri", "Heqet"] 
+stygian_last_names = ["Akela", "Hap-tek", "Karo-amat", "Meshkenet", "Sa-khana", "Nebt-nehi", "Ta-ba-ret", "Maat-amanset"]
+
+# I thought a Celtic type might work, but went with Barbarian fantasy generator and some Old High German
+cimmmerian_male_names = ["Conn", "Vetur", "Jotmon", "Yinderd", "Ipror", "Jagfend", "Gholnen", "Llasild", "Khurmen", "Aulfwic", "Heffric", "Saeldrid", "Thobald", "Siegnan"]
+cimmmerian_female_names = ["Faya", "Reha", "Agnis", "Sonja", "Shisha", "Dolma", "Gihlfe", "Wedlash", "Alwyn", "Gerhild"] 
+cimmmerian_last_names = [""]
+
+hyrkanian_male_names = ["Sayanov", "Kurchin", "Kulik", "Suslyakov", "Surikov", "Ilyushin", "Moryakov", "Yuzkov", "Rozovsky", "Viktor", "Damirov"]
+hyrkanian_female_names = ["Talanova", "Silestrova", "Alena", "Amalia", "Kalantaya", "Inessa", "Ryheakova", "Allesia"] 
+hyrkanian_last_names = ["Ilyich", "Artonovich", "Vadimovich", "Olegovich", "Artemovich", "Ulyanov", "Kulyanov", "Sigalov", "Astanokov", "Zinovich", "Vilanova"]
+
+# went with Chinese rather than Japanese. Japanese could be added in as "Ainu" or something.
+khitian_male_names = ["Lang", "Qin", "Liao", "Zhuan", "Jia", "Xiang", "Fen", "Tian", "Zhou", "Li", "Qiao"]
+khitian_female_names = ["Xi", "Zou", "Shi", "Xun", "Sun", "Lho", "Xia", "Tan", "Su", "Yi", "Yu"] 
+khitian_last_names = ["Peng", "Feng", "Xuefeng", "Zheng", "Jian", "Xieren", "Cai", "Yong", "Yuhong", "Hai"]
+
+# unused
+vendyan_male_names = ["Horatio", "Chiron", "Lucius", "Claudio", "Mercutio", "Tybalt", "Strato", "Martius", "Mycaenas", "Alastor"]
+vendyan_female_names = ["Lychorida", "Dionyza", "Sylvia", "Cymbeline", "Calphurnia", "Cressida", "Innogen", "Coryda"] 
+vendyan_last_names = [""]
+
+# unused
+juman_male_names = ["Horatio", "Chiron", "Lucius", "Claudio", "Mercutio", "Tybalt", "Strato", "Martius", "Mycaenas", "Alastor"]
+juman_female_names = ["Lychorida", "Dionyza", "Sylvia", "Cymbeline", "Calphurnia", "Cressida", "Innogen", "Coryda"] 
+juman_last_names = [""]
 
 
 
 dwarf_male_names = ["Dolmec", "Thrastil", "Vasdrad", "Sindur", "Lodur", "Baffur", "Vuldan", "Glifon", "Thafur", "Thurbur", "Glirvun", "Nendar", "Floto", "Throlim"]
 dwarf_female_names = ["Jozithra", "Elzulin", "Hethika", "Koteline", "Nufelda"]
-dwarf_last_names = ["x", "y", "z"]
+dwarf_last_names = [""]
 
 elf_male_names = ["Amarthedir", "Harthedir", "Lledon", "Ninthalor", "Vesryn", "Tarathiel", "Lysanthir"]
 elf_female_names = ["Lithoniel", "Tialha", "Nuala", "Alasse", "Eshryneth", "Aerith", "Lindis", "Deulara"]
@@ -77,6 +105,54 @@ halfling_male_names = ["Alberic", "Audomar", "Godobald", "Halfred", "Hlodver", "
 halfling_female_names = ["Verbena", "Rosa", "Cercis", "Beryl", "Selwyn", "Tabita"]
 halfling_last_names = ["Potts", "Mugwort", "Brockhouse", "Sandshank", "Goodbody", "Townsend"]
 
+# made up silly sounding dwarvish names
+gnome_male_names = ["Bombi", "Medden", "Flifur", "Eltas", "Jeleson", "Granwe", "Elmin", "Elkan", "Rimmi", "Urdur", "Pinka", "Nebi", "Tebi", "Yebi"]
+gnome_female_names = ["Sella", "Flyfa", "Heccati", "Kafa", "Wynni"]
+gnome_last_names = ["", "", ""]
+
+
+
+# Equipment.
+# I am here assuming that retainers need not roll for 30-180 GP and spend it on equipment, but rather
+# just pick (probabilistically) from the basic options afforded them. I am not anticipating that 
+# misc. gear (rope and spikes and so on) need be enumerated.
+
+eqt_mu = ["Dagger"]
+eqt_simple = ["Spear", "Mace"]
+eqt_sidearms = ["Dagger", "Sword"]
+eqt_blunt = ["Mace", "Quarterstaff", "Warhammer"]
+eqt_misc_big = ["Battleax", "Morningstar", "Flail", "Polearm"]
+eqt_big_blades = ["Broadsword", "Two-Handed Sword"]
+eqt_knightly = ["Lance"]
+eqt_horse = ["Draft Horse", "Light Horse", "Heavy Warhorse"]
+
+eqt_simple_ranged = ["Shortbow", "Sling"]
+eqt_expert_ranged = ["Horsebow", "Longbow", "Composite Bow"]
+eqt_exotic_ranged = ["Light Crossbow", "Heavy Crossbow"]
+
+eqt_unarmored = ["Robes", "Aristocratic Clothes", "Stained Travel Clothes"]
+eqt_light_armor = ["Leather"]
+eqt_mid_armor = ["Chain Mail"]
+eqt_heavy_armor = ["Chain Mail", "Plate"]
+eqt_barbaric_armor = ["Unarmored", "Leather", "Chain Mail"]
+eqt_shield = ["Shield"]
+
+eqt_holysymbol = ["Holy Symbol", "Silvered Holy Symbol"]
+eqt_thievestools = ["Thieves' Tools"]
+eqt_spellbook = ["Spellbook"]
+
+eqt_gear = ["Holy Water"]
+
+eqt_accessories = ["Silken Breeches", "Fine Leather Boots", "Wide-brimmed Hat"]
+eqt_barbaric_accessories = ["Furs", "Horned Helm", "Antlered Helm"]
+
+
+# spells
+mu_first_level_spells = ["Detect Magic", "Hold Portal", "Magic Missile", "Read Languages", "Shield", "Light", "Charm Person", "Sleep"]
+ill_first_level_spells = [""]
+necro_first_level_spells = [""]
+
+cantrips = ["Gust of Wind", "Spark from Nothing", "Control Flame", "Ray of Frost", "Lighten Load", "Prestidigitate", "Minor Telekinesis", "Trick of the Voice", "Puff of Smoke", "Weigh Down"]
 
 #%%
 
@@ -186,8 +262,8 @@ def __getClass__( attributes ):
     elif highest_attribute == "STR" and constitution >= 15:
         character_class = "Barbarian"
     
-    # extremely unlikely, as written:
-    elif highest_attribute == "WIS" and dexterity >= 9 and strength >= 9:
+    # extremely unlikely, as written, so changed to lower requirements:
+    elif highest_attribute == "WIS" and dexterity >= 12:
         if tempChoose >= 3:
             character_class = "Monk"
         else:
@@ -421,16 +497,17 @@ def __getSubRace__(charclass, race):
                 HyrkanChance = 0.30
             elif charclass == "Assassin":
                 ZingarChance = 0.50
-                # KhitChance = 0.50
+                AquilChance = 0.25
+                KhitChance = 0.25
             elif charclass == "Cleric":
                 AquilChance = 0.60
             elif charclass == "Anti-Cleric":
                 AquilChance = 0.60
             elif charclass == "Shaman":
-                HyrkanChance = 1.00
-            # elif charclass == "Monk":
+                HyrkanChance = 0.60
+            elif charclass == "Monk":
                 # VendyChance = 0.30
-                # KhitChance = 0.60
+                KhitChance = 0.60
             else:
                 AquilChance = 0.15
                 ZingarChance = 0.15
@@ -469,14 +546,14 @@ def __getSubRace__(charclass, race):
             elif charclass == "Druid":
                 result = "Wood Elf"
             elif charclass == "Fighting-Man":
-                result = "High Elf"
+                result = "Elf"
             elif charclass == "Magic-User":
-                result = "High Elf"
+                result = "Elf"
             else:
                 if roll <= 3:
                     result = "Wood Elf"
                 else:
-                    result = "High Elf"
+                    result = "Elf"
 
             return result
                 
@@ -570,13 +647,6 @@ def __getAlignment__( charclass, race ):
 
 def __getSex__( race , charclass, attributes ):
 
-    strength = attributes.get("STR")
-    intelligence = attributes.get("INT")
-    wisdom = attributes.get("WIS")
-    dexterity = attributes.get("DEX")
-    constitution = attributes.get("CON")
-    charisma = attributes.get("CHA")
-
     # setting up a variable to contain a % chance of character being female
     femmechance = 0
 
@@ -597,7 +667,7 @@ def __getSex__( race , charclass, attributes ):
     if race == "Dwarf":
         femmechance = 0
     elif race == "Gnome":
-        femmechance = 0
+        femmechance = 33
     elif race == "Halfing":
         femmechance = 33
     elif race == "Human" and isMartial:
@@ -606,9 +676,6 @@ def __getSex__( race , charclass, attributes ):
         femmechance = 40
     elif race == "Elf":
         femmechance = 50
-
-
-
 
     # random percentile roll-under that will change adventurer to female
 
@@ -629,11 +696,65 @@ def __getRandomName__( race, gender ):
     name = ""
 
     if race == "Human" and gender == "Male":
-            name = human_male_names[random.randint(0,len(human_male_names)-1)]
+        name = human_male_names[random.randint(0,len(human_male_names)-1)]
         
     if race == "Human" and gender == "Female":
         name = human_female_names[random.randint(0,len(human_female_names)-1)]
+
+    if race == "Aquilonian" and gender == "Male":
+        name = aquilonian_male_names[random.randint(0,len(aquilonian_male_names)-1)]
         
+    if race == "Aquilonian" and gender == "Female":
+        name = aquilonian_female_names[random.randint(0,len(aquilonian_female_names)-1)]
+
+    if race == "Zingaran" and gender == "Male":
+        name = zingaran_male_names[random.randint(0,len(zingaran_male_names)-1)]
+        
+    if race == "Zingaran" and gender == "Female":
+        name = zingaran_female_names[random.randint(0,len(zingaran_female_names)-1)]
+
+    if race == "Border Kingdom" and gender == "Male":
+        name = borderking_male_names[random.randint(0,len(borderking_male_names)-1)]
+        
+    if race == "Border Kingdom" and gender == "Female":
+        name = borderking_female_names[random.randint(0,len(borderking_female_names)-1)]
+
+    if race == "Skandaharian" and gender == "Male":
+        name = skanda_male_names[random.randint(0,len(skanda_male_names)-1)]
+        
+    if race == "Skandaharian" and gender == "Female":
+        name = skanda_female_names[random.randint(0,len(skanda_female_names)-1)]
+
+    if race == "Cimmerian" and gender == "Male":
+        name = cimmmerian_male_names[random.randint(0,len(cimmmerian_male_names)-1)]
+        
+    if race == "Cimmerian" and gender == "Female":
+        name = cimmmerian_female_names[random.randint(0,len(cimmmerian_female_names)-1)]
+
+    if race == "Hyrkanian" and gender == "Male":
+        name = hyrkanian_male_names[random.randint(0,len(hyrkanian_male_names)-1)]
+        
+    if race == "Hyrkanian" and gender == "Female":
+        name = hyrkanian_female_names[random.randint(0,len(hyrkanian_female_names)-1)]
+
+    if race == "Stygian" and gender == "Male":
+        name = stygian_male_names[random.randint(0,len(stygian_male_names)-1)]
+        
+    if race == "Stygian" and gender == "Female":
+        name = stygian_female_names[random.randint(0,len(stygian_female_names)-1)]
+
+    if race == "Turanian" and gender == "Male":
+        name = turanian_male_names[random.randint(0,len(turanian_male_names)-1)]
+        
+    if race == "Turanian" and gender == "Female":
+        name = turanian_female_names[random.randint(0,len(turanian_female_names)-1)]
+
+    if race == "Khitai" and gender == "Male":
+        name = khitian_male_names[random.randint(0,len(khitian_male_names)-1)]
+        
+    if race == "Khitai" and gender == "Female":
+        name = khitian_female_names[random.randint(0,len(khitian_female_names)-1)]
+
     if race == "Dwarf" and gender == "Male":
         name = dwarf_male_names[random.randint(0,len(dwarf_male_names)-1)]
 
@@ -646,10 +767,70 @@ def __getRandomName__( race, gender ):
     if race == "Halfling" and gender == "Female":
         name = halfling_female_names[random.randint(0,len(halfling_female_names)-1)]
 
+    if race == "Elf" and gender == "Male":
+        name = elf_male_names[random.randint(0,len(elf_male_names)-1)]
+
+    if race == "Elf" and gender == "Female":
+        name = elf_female_names[random.randint(0,len(elf_female_names)-1)]
+
+    if race == "Wood Elf" and gender == "Male":
+        name = woodelf_male_names[random.randint(0,len(woodelf_male_names)-1)]
+
+    if race == "Wood Elf" and gender == "Female":
+        name = woodelf_female_names[random.randint(0,len(woodelf_female_names)-1)]
+
+    if race == "Gnome" and gender == "Male":
+        name = gnome_male_names[random.randint(0,len(gnome_male_names)-1)]
+
+    if race == "Gnome" and gender == "Female":
+        name = gnome_female_names[random.randint(0,len(gnome_female_names)-1)]
+
     match race:
-        case "Human": name += f' {human_last_names[random.randint(0,len(human_last_names)-1)]}'
-        case "Dwarf": name += f' {dwarf_last_names[random.randint(0,len(dwarf_last_names)-1)]}'
-        case "Halfling": name += f' {halfling_last_names[random.randint(0,len(halfling_last_names)-1)]}'
+        case "Human": 
+            if human_last_names != [""]:
+                name += f' {human_last_names[random.randint(0,len(human_last_names)-1)]}'
+        case "Aquilonian": 
+            if aquilonian_last_names != [""]:
+                name += f' {aquilonian_last_names[random.randint(0,len(aquilonian_last_names)-1)]}'
+        case "Border Kingdom": 
+            if borderking_last_names != [""]:
+                name += f' {borderking_last_names[random.randint(0,len(borderking_last_names)-1)]}'
+        case "Zingaran": 
+            if zingaran_last_names != [""]:
+                name += f' {zingaran_last_names[random.randint(0,len(zingaran_last_names)-1)]}'
+        case "Skandaharian": 
+            if skanda_last_names != [""]:
+                name += f' {skanda_last_names[random.randint(0,len(skanda_last_names)-1)]}'
+        case "Cimmerian": 
+            if cimmmerian_last_names != [""]:
+                name += f' {cimmmerian_last_names[random.randint(0,len(cimmmerian_last_names)-1)]}'
+        case "Stygian": 
+            if stygian_last_names != [""]:
+                name += f' {stygian_last_names[random.randint(0,len(stygian_last_names)-1)]}'
+        case "Hyrkanian": 
+            if hyrkanian_last_names != [""]:
+                name += f' {hyrkanian_last_names[random.randint(0,len(hyrkanian_last_names)-1)]}'
+        case "Turanian": 
+            if turanian_last_names != [""]:
+                name += f' {turanian_last_names[random.randint(0,len(turanian_last_names)-1)]}'
+        case "Khitai": 
+            if khitian_last_names != [""]:
+                name += f' {khitian_last_names[random.randint(0,len(khitian_last_names)-1)]}'
+        case "Elf": 
+            if elf_last_names != [""]:
+                name += f' {elf_last_names[random.randint(0,len(elf_last_names)-1)]}'
+        case "Wood Elf": 
+            if woodelf_last_names != [""]:
+                name += f' {woodelf_last_names[random.randint(0,len(woodelf_last_names)-1)]}'
+        case "Dwarf": 
+            if dwarf_last_names != [""]:
+                name += f' {dwarf_last_names[random.randint(0,len(dwarf_last_names)-1)]}'
+        case "Halfling": 
+            if halfling_last_names != [""]:
+                name += f' {halfling_last_names[random.randint(0,len(halfling_last_names)-1)]}'
+        case "Gnome": 
+            if gnome_last_names != [""]:
+                name += f' {gnome_last_names[random.randint(0,len(gnome_last_names)-1)]}'
     
     return name
 
@@ -819,7 +1000,7 @@ class myCharacter:
         self.subrace = __getSubRace__(self.characterClass, self.race)
         self.sex = __getSex__(self.race, self.characterClass, self.abilityScores)
         self.align = __getAlignment__(self.characterClass, self.race)
-        self.name = ""
+        self.name = __getRandomName__(self.subrace, self.sex)
         
         self.prBonus = ""
         self.hitDice = ""
@@ -851,6 +1032,7 @@ if num_chars == 1:
 
     abil_text = str_text + int_text + wis_text + dex_text + con_text
 
+    print("")
     print(newCharacter.name)
     print(newCharacter.align, " ", newCharacter.subrace, " ", newCharacter.characterClass, ", ", newCharacter.sex, sep="")
     print(newCharacter.hitPoints + " hp")
@@ -861,8 +1043,12 @@ if num_chars == 1:
     print("Constitution:", constitution)
     print("Charisma:", charisma)
     print(abil_text)
+    print("")
 
 else: 
+
+    print("") # just as a spacer in the terminal
+
     for number in range(1, num_chars):
 
         newCharacter = myCharacter()
@@ -870,6 +1056,7 @@ else:
         print(newCharacter.name + ", " + newCharacter.hitPoints + " hp")
         print(newCharacter.align, " ", newCharacter.subrace, " ", newCharacter.characterClass, ", ", newCharacter.sex, sep="")
         print(newCharacter.abilityScores)
+        print("") # just as a spacer in the terminal
 
 
 
