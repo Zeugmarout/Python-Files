@@ -9,6 +9,11 @@ import random
 import numpy as np
 import json
 
+# ask the user how many characters to generate
+num_chars_str = input("No. of characters to generate: ")
+num_chars = int(num_chars_str)
+
+
 # declarations of basic variables
 
 races = ["Human", "Dwarf", "Halfling", "Elf"]
@@ -31,17 +36,46 @@ human_male_names = ["A", "B", "C"]
 human_female_names = ["A", "B", "C"]
 human_last_names = ["x", "y", "z"]
 
-dwarf_male_names = ["A", "B", "C"]
-dwarf_female_names = ["A", "B", "C"]
+# roman-sounding male names, howard's female names
+aquilonian_male_names = ["Tiberias", "Cossos", "Flavius", "Attius", "Ascalante", "Dionus", "Epimetreus", "Pelias", "Trinculo", "Nabonidas"]
+aquilonian_female_names = ["Maerbina", "Natala", "Vateesa", "Yasmela", "Khorala", "Myshalla", "Cymoril", "Hippolyta", "Octavia"]
+aquilonian_last_names = [""]
+
+borderking_male_names = ["Guiscard", "Hollin", "Gwalon", "Faelan", "Loic", "Barald", "Agbeorn", "Darnvith", "Balthus"]
+borderking_female_names = ["Wyldora", "Linaeya", "Valhame", "Isgar", "Domla", "Wenhild", "Iwohd"]
+borderking_last_names = ["", "", ""]
+
+skanda_male_names = ["Yorn", "Throf", "Vigtham", "Hyrrad", "Soleigr", "Sigferth", "Bjorgulf", "Thorred", "Harrek", "Halvdan"]
+skanda_female_names = ["Hildrid", "Aestrid", "Thorlja", "Thorve", "Ashild", "Halla", "Holmfrid"]
+skanda_last_names = [""]
+
+# zingarans are spanish(esque) but here I've taken mostly names from the Shakespearean generator
+# for a tone of elegance and aristocracy fallen into decay.
+zingaran_male_names = ["Horatio", "Chiron", "Lucius", "Claudio", "Mercutio", "Tybalt", "Strato", "Martius", "Mycaenas", "Alastor"]
+zingaran_female_names = ["Lychorida", "Dionyza", "Sylvia", "Cymbeline", "Calphurnia", "Cressida", "Innogen", "Coryda"] 
+zingaran_last_names = [""]
+
+# remaining human names 
+# "Turanian", "Stygian", "Cimmerian", "Hyrkanian", "Khitai", "Vendyan",
+
+
+
+
+dwarf_male_names = ["Dolmec", "Thrastil", "Vasdrad", "Sindur", "Lodur", "Baffur", "Vuldan", "Glifon", "Thafur", "Thurbur", "Glirvun", "Nendar", "Floto", "Throlim"]
+dwarf_female_names = ["Jozithra", "Elzulin", "Hethika", "Koteline", "Nufelda"]
 dwarf_last_names = ["x", "y", "z"]
 
-elf_male_names = ["A", "B", "C"]
-elf_female_names = ["A", "B", "C"]
-elf_last_names = ["x", "y", "z"]
+elf_male_names = ["Amarthedir", "Harthedir", "Lledon", "Ninthalor", "Vesryn", "Tarathiel", "Lysanthir"]
+elf_female_names = ["Lithoniel", "Tialha", "Nuala", "Alasse", "Eshryneth", "Aerith", "Lindis", "Deulara"]
+elf_last_names = ["tir Glioscarnach", "tir Fuar", "tir Airgid"]
 
-halfling_male_names = ["A", "B", "C"]
-halfling_female_names = ["A", "B", "C"]
-halfling_last_names = ["x", "y", "z"]
+woodelf_male_names = ["Gwaelben", "Yrchanar", "Triven", "Galaspen", "Maethor", "Aelchanar", "Gwilithien"]
+woodelf_female_names = ["Liriel", "Achariel", "Malanil", "Nirnith", "Cabedis", "Teliadis", "Naerhel", "Uaneth"]
+woodelf_last_names = ["na Scaethanna", "na Cogarnach", "na n-Iontas"]
+
+halfling_male_names = ["Alberic", "Audomar", "Godobald", "Halfred", "Hlodver", "Cosimo"]
+halfling_female_names = ["Verbena", "Rosa", "Cercis", "Beryl", "Selwyn", "Tabita"]
+halfling_last_names = ["Potts", "Mugwort", "Brockhouse", "Sandshank", "Goodbody", "Townsend"]
 
 
 #%%
@@ -153,8 +187,11 @@ def __getClass__( attributes ):
         character_class = "Barbarian"
     
     # extremely unlikely, as written:
-    elif highest_attribute == "WIS" and dexterity >= 11 and strength >= 11:
-        character_class = "Monk"
+    elif highest_attribute == "WIS" and dexterity >= 9 and strength >= 9:
+        if tempChoose >= 3:
+            character_class = "Monk"
+        else:
+            character_class = "Cleric"
 
     # Thief and Assassin block
     elif highest_attribute == "DEX" and strength >= 12 and intelligence >= 12 and dexterity >= 12:
@@ -543,13 +580,27 @@ def __getSex__( race , charclass, attributes ):
     # setting up a variable to contain a % chance of character being female
     femmechance = 0
 
+    isMartial = False
+
+    match charclass:
+        case "Fighting-Man":
+            isMartial = True
+        case "Paladin":
+            isMartial = True
+        case "Anti-Paladin":
+            isMartial = True
+        case "Ranger":
+            isMartial = True
+        case "Barbarian":
+            isMartial = True
+
     if race == "Dwarf":
         femmechance = 0
     elif race == "Gnome":
         femmechance = 0
     elif race == "Halfing":
         femmechance = 33
-    elif race == "Human" and (charclass == "Fighting-Man" or charclass == "Ranger"):
+    elif race == "Human" and isMartial:
         femmechance = 10
     elif race == "Human":
         femmechance = 40
@@ -776,39 +827,50 @@ class myCharacter:
         self.classFeatures = ""
         self.spellsperday = ""
 
-newCharacter = myCharacter()
+if num_chars == 1:
+    newCharacter = myCharacter()
 
-# print(json.dumps(newCharacter.__dict__))
-# need to print it in a different order than it's generated in 
-# ie name first, so on and so forth
+    # print(json.dumps(newCharacter.__dict__))
+    # need to print it in a different order than it's generated in 
+    # ie name first, so on and so forth
 
-# redundant(?) block here so that I can write out the attributes print functions 
-# as readable code
-strength = newCharacter.abilityScores.get("STR")
-intelligence = newCharacter.abilityScores.get("INT")
-wisdom = newCharacter.abilityScores.get("WIS")
-dexterity = newCharacter.abilityScores.get("DEX")
-constitution = newCharacter.abilityScores.get("CON")
-charisma = newCharacter.abilityScores.get("CHA")
+    # redundant(?) block here so that I can write out the attributes print functions 
+    # as readable code
+    strength = newCharacter.abilityScores.get("STR")
+    intelligence = newCharacter.abilityScores.get("INT")
+    wisdom = newCharacter.abilityScores.get("WIS")
+    dexterity = newCharacter.abilityScores.get("DEX")
+    constitution = newCharacter.abilityScores.get("CON")
+    charisma = newCharacter.abilityScores.get("CHA")
 
-str_text = __getStrMods__(strength)
-int_text = __getIntMods__(intelligence, newCharacter.characterClass)
-wis_text = __getWisMods__(wisdom)
-dex_text = __getDexMods__(dexterity)
-con_text = __getConMods__(constitution)
+    str_text = __getStrMods__(strength)
+    int_text = __getIntMods__(intelligence, newCharacter.characterClass)
+    wis_text = __getWisMods__(wisdom)
+    dex_text = __getDexMods__(dexterity)
+    con_text = __getConMods__(constitution)
 
-abil_text = str_text + int_text + wis_text + dex_text + con_text
+    abil_text = str_text + int_text + wis_text + dex_text + con_text
 
-print(newCharacter.name)
-print(newCharacter.align, " ", newCharacter.subrace, " ", newCharacter.characterClass, ", ", newCharacter.sex, sep="")
-print(newCharacter.hitPoints + " hp")
-print("Strength:", strength)
-print("Intelligence:", intelligence)
-print("Wisdom:", wisdom)
-print("Dexterity:", dexterity)
-print("Constitution:", constitution)
-print("Charisma:", charisma)
-print(abil_text)
+    print(newCharacter.name)
+    print(newCharacter.align, " ", newCharacter.subrace, " ", newCharacter.characterClass, ", ", newCharacter.sex, sep="")
+    print(newCharacter.hitPoints + " hp")
+    print("Strength:", strength)
+    print("Intelligence:", intelligence)
+    print("Wisdom:", wisdom)
+    print("Dexterity:", dexterity)
+    print("Constitution:", constitution)
+    print("Charisma:", charisma)
+    print(abil_text)
+
+else: 
+    for number in range(1, num_chars):
+
+        newCharacter = myCharacter()
+
+        print(newCharacter.name + ", " + newCharacter.hitPoints + " hp")
+        print(newCharacter.align, " ", newCharacter.subrace, " ", newCharacter.characterClass, ", ", newCharacter.sex, sep="")
+        print(newCharacter.abilityScores)
+
 
 
 #%%
