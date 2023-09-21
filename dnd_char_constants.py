@@ -93,3 +93,46 @@ halfling_last_names = ["Potts", "Mugwort", "Brockhouse", "Sandshank", "Goodbody"
 gnome_male_names = ["Bombi", "Medden", "Flifur", "Eltas", "Jeleson", "Granwe", "Elmin", "Elkan", "Rimmi", "Urdur", "Pinka", "Nebi", "Tebi", "Yebi"]
 gnome_female_names = ["Sella", "Flyfa", "Heccati", "Kafa", "Wynni"]
 gnome_last_names = [""]
+
+
+# Equipment.
+# I am here assuming that retainers need not roll for 30-180 GP and spend it on equipment, but rather
+# just pick (probabilistically) from the basic options afforded them. I am not anticipating that 
+# misc. gear (rope and spikes and so on) need be enumerated.
+
+eqt_mu = ["Dagger"]
+eqt_simple = ["Spear", "Mace"]
+eqt_sidearms = ["Dagger", "Sword"]
+eqt_blunt = ["Mace", "Quarterstaff", "Warhammer"]
+eqt_misc_big = ["Battleax", "Morningstar", "Flail", "Polearm"]
+eqt_big_blades = ["Broadsword", "Two-Handed Sword"]
+eqt_knightly = ["Lance"]
+eqt_horse = ["Draft Horse", "Light Horse", "Heavy Warhorse"]
+
+eqt_simple_ranged = ["Shortbow", "Sling"]
+eqt_expert_ranged = ["Horsebow", "Longbow", "Composite Bow"]
+eqt_exotic_ranged = ["Light Crossbow", "Heavy Crossbow"]
+
+eqt_unarmored = ["Robes", "Aristocratic Clothes", "Stained Travel Clothes"]
+eqt_light_armor = ["Leather"]
+eqt_mid_armor = ["Chain Mail"]
+eqt_heavy_armor = ["Chain Mail", "Plate"]
+eqt_barbaric_armor = ["Unarmored", "Leather", "Chain Mail"]
+eqt_shield = ["Shield"]
+
+eqt_holysymbol = ["Holy Symbol", "Silvered Holy Symbol"]
+eqt_thievestools = ["Thieves' Tools"]
+eqt_spellbook = ["Spellbook"]
+
+eqt_gear = ["Holy Water"]
+
+eqt_accessories = ["Silken Breeches", "Fine Leather Boots", "Wide-brimmed Hat"]
+eqt_barbaric_accessories = ["Furs", "Horned Helm", "Antlered Helm"]
+
+
+# spells
+mu_first_level_spells = ["Detect Magic", "Hold Portal", "Magic Missile", "Read Languages", "Shield", "Light", "Charm Person", "Sleep"]
+ill_first_level_spells = [""]
+necro_first_level_spells = [""]
+
+cantrips = ["Gust of Wind", "Spark from Nothing", "Control Flame", "Ray of Frost", "Lighten Load", "Prestidigitate", "Minor Telekinesis", "Trick of the Voice", "Puff of Smoke", "Weigh Down"]
