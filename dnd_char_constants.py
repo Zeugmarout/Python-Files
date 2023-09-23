@@ -19,7 +19,7 @@ human_male_names = ["Guiscard", "Sciodin", "Hollin", "Gwalon", "Faelan", "Loic",
 human_female_names = ["Maerbina", "Natala", "Vateesa", "Yasmela", "Khorala", "Myshalla", "Cymoril", "Hippolyta", "Octavia", "Wyldora", "Linaeya", "Valhame", "Isgar", "Domla", "Wenhild", "Iwohd", "Lychorida", "Dionyza", "Sylvia", "Cymbeline", "Calphurnia", "Cressida", "Innogen", "Coryda"]
 human_last_names = [""]
 
-# roman-sounding male names, howard's female names
+# roman-sounding/stage-roman Howardian male names, various howard's female names
 aquilonian_male_names = ["Tiberias", "Cossos", "Flavius", "Attius", "Ascalante", "Dionus", "Epimetreus", "Pelias", "Trinculo", "Nabonidas"]
 aquilonian_female_names = ["Maerbina", "Natala", "Vateesa", "Yasmela", "Khorala", "Myshalla", "Cymoril", "Hippolyta", "Octavia"]
 aquilonian_last_names = [""]
